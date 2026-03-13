@@ -112,6 +112,8 @@ body[dir="rtl"] .service-card h4{font-family:'Cairo',sans-serif}
 .lang-pill{display:flex;align-items:center;background:rgba(255,255,255,.08);border-radius:999px;position:relative;padding:3px;gap:0}
 .lang-pill button{position:relative;z-index:1;padding:.35rem 1rem;font-size:.8rem;font-weight:500;color:rgba(255,255,255,.5);border:none;background:none;cursor:pointer;transition:color .3s;font-family:'DM Sans',sans-serif}
 .lang-pill button.active{color:#fff}
+@media(max-width:768px){.lang-pill{transform:scale(.8);transform-origin:right center}
+[dir="rtl"] .lang-pill{transform-origin:left center}}
 .lang-pill .pill-indicator{position:absolute;height:calc(100% - 6px);border-radius:999px;background:var(--teal);transition:left .35s var(--transition),width .35s var(--transition);top:3px;z-index:0}
 
 /* WhatsApp Pulse */
@@ -247,25 +249,10 @@ footer a:hover{color:var(--teal)}
 <i class="fa-brands fa-whatsapp text-lg"></i>
 </a>
 </div>
-<div class="flex flex-col sm:flex-row gap-4" id="stat-pills">
-<div class="stat-pill"><span class="stat-num" data-count="10">0</span><span class="stat-num" style="font-size:1.2rem">+</span><span class="stat-label" data-i18n="statYears">Years</span></div>
-<div class="stat-pill"><span class="stat-num" data-count="500">0</span><span class="stat-num" style="font-size:1.2rem">+</span><span class="stat-label" data-i18n="statClients">Clients</span></div>
-<div class="stat-pill"><span class="stat-num" data-count="5">0</span><span class="stat-label" data-i18n="statServices">Services</span></div>
-</div>
 </div>
 <div class="hidden lg:block lg:col-span-5"></div>
 </div>
 </section>
-
-<!-- Marquee Strip -->
-<div class="marquee-strip" aria-hidden="true">
-<div class="marquee-inner">
-<span>SECRÉTARIAT · CONSEIL ADMINISTRATIF · IMPRESSION · NUMÉRIQUE · ORAN ·</span>
-<span>SECRÉTARIAT · CONSEIL ADMINISTRATIF · IMPRESSION · NUMÉRIQUE · ORAN ·</span>
-<span>SECRÉTARIAT · CONSEIL ADMINISTRATIF · IMPRESSION · NUMÉRIQUE · ORAN ·</span>
-<span>SECRÉTARIAT · CONSEIL ADMINISTRATIF · IMPRESSION · NUMÉRIQUE · ORAN ·</span>
-</div>
-</div>
 
 <!-- Services Section -->
 <section id="services" class="py-24 lg:py-32" style="background:var(--offwhite)">
@@ -310,7 +297,7 @@ footer a:hover{color:var(--teal)}
 </section>
 
 <!-- Portfolio Section -->
-<section id="portfolio" class="py-24 lg:py-32" style="background:#fff">
+<section id="portfolio" class="py-24 lg:py-32" style="background:var(--offwhite)">
 <div class="max-w-7xl mx-auto px-5 lg:px-8">
 <div class="mb-16 reveal">
 <span class="section-label" data-i18n="sectionLabelPortfolio">Our Work</span>
@@ -324,27 +311,27 @@ footer a:hover{color:var(--teal)}
 </div>
 <div class="portfolio-grid" id="portfolio-gallery">
 <div class="p-item prints" style="min-height:320px">
-<img src="https://images.unsplash.com/photo-1594911187425-9ba44f2d57cc?auto=format&fit=crop&w=600&q=80" alt="Photo Album" loading="lazy">
+<img src="portfolio_album.png" alt="Photo Album" loading="lazy">
 <div class="p-overlay"><i class="fa-solid fa-images text-2xl text-white mb-2"></i><span class="text-white font-display text-xl" data-i18n="pItm1">Wedding Album</span></div>
 </div>
 <div class="p-item cards" style="min-height:200px">
-<img src="https://images.unsplash.com/photo-1589412586676-47b1c41fa214?auto=format&fit=crop&w=600&q=80" alt="Business Card" loading="lazy">
+<img src="portfolio_cards.png" alt="Business Card" loading="lazy">
 <div class="p-overlay"><i class="fa-solid fa-address-card text-2xl text-white mb-2"></i><span class="text-white font-display text-xl" data-i18n="pItm2">Business Card</span></div>
 </div>
 <div class="p-item books" style="min-height:200px">
-<img src="https://images.unsplash.com/photo-1623126757656-78cc12dff6f9?auto=format&fit=crop&w=600&q=80" alt="Printed Book" loading="lazy">
+<img src="portfolio_thesis.png" alt="Printed Book" loading="lazy">
 <div class="p-overlay"><i class="fa-solid fa-book text-2xl text-white mb-2"></i><span class="text-white font-display text-xl" data-i18n="pItm3">Graduation Memoir</span></div>
 </div>
 <div class="p-item cards" style="min-height:200px">
-<img src="https://images.unsplash.com/photo-1606768666853-403c90a981ad?auto=format&fit=crop&w=600&q=80" alt="Wedding Invitation" loading="lazy">
+<img src="portfolio_invitation.png" alt="Wedding Invitation" loading="lazy">
 <div class="p-overlay"><i class="fa-solid fa-envelope-open-text text-2xl text-white mb-2"></i><span class="text-white font-display text-xl" data-i18n="pItm4">Event Invitation</span></div>
 </div>
 <div class="p-item prints" style="min-height:200px">
-<img src="https://images.unsplash.com/photo-1606214872149-5f25baf0e80a?auto=format&fit=crop&w=600&q=80" alt="Large Print" loading="lazy">
+<img src="portfolio_print.png" alt="Large Print" loading="lazy">
 <div class="p-overlay"><i class="fa-solid fa-print text-2xl text-white mb-2"></i><span class="text-white font-display text-xl" data-i18n="pItm5">Custom Print Design</span></div>
 </div>
 <div class="p-item books" style="min-height:200px">
-<img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80" alt="Stacked Books" loading="lazy">
+<img src="portfolio_books.png" alt="Stacked Books" loading="lazy">
 <div class="p-overlay"><i class="fa-solid fa-book-open text-2xl text-white mb-2"></i><span class="text-white font-display text-xl" data-i18n="pItm6">University Thesis Binding</span></div>
 </div>
 </div>
@@ -682,5 +669,4 @@ window.open(`https://wa.me/213799527513?text=${encodeURIComponent(msg)}`,'_blank
 }
 </script>
 </body>
-</html>
 </html>
