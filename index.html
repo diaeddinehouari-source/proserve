@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProServe | مؤسسة السكرتارية والاستشارة الإدارية</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (CDN for simple static file without build step) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0f172a',
+                        navyLight: '#1e293b',
+                        teal: '#0d9488',
+                        tealLight: '#14b8a6',
+                        tealDark: '#0f766e',
+                        white: '#ffffff',
+                        grayLight: '#f8fafc',
+                        grayText: '#64748b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base styles */
+        :root {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Smooth fade in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Portfolio Filter Transitions */
+        .portfolio-item {
+            transition: all 0.4s ease;
+        }
+
+        .portfolio-item.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0f172a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d9488;
+        }
+
+        /* Glassmorphism navbar */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Background Overlay */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.8));
+        }
+
+        /* Floating animations for decorative elements */
+        .float-anim {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-navy overflow-x-hidden pt-20" dir="ltr">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 glass-nav text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <!-- Custom Image Logo (Provided by the user) without white background -->
+                    <img src="logo.png" alt="ProServe Logo"
+                        class="h-16 w-auto object-contain drop-shadow-md">
+                    <span class="font-bold text-2xl tracking-tight text-white flex flex-col hidden sm:flex">
+                        <span class="leading-none">ProServe</span>
+                        <span class="text-[10px] text-tealLight tracking-widest leading-tight mt-1 hidden md:block"
+                            data-i18n="logoSub">CONSULTING</span>
+                    </span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8 rtl:space-x-reverse" id="desktop-menu">
+                    <a href="#home" class="hover:text-tealLight font-medium transition-colors"
+                        data-i18n="navHome">Home</a>
+                    <a href="#services" class="hover:text-tealLight font-medium transition-colors"
+                        data-i18n="navServices">Services</a>
+                    <a href="#portfolio" class="hover:text-tealLight font-medium transition-colors"
+                        data-i18n="navPortfolio">Portfolio</a>
+                    <a href="#contact" class="hover:text-tealLight font-medium transition-colors"
+                        data-i18n="navContact">Contact</a>
+                    <a href="#booking"
+                        class="bg-teal hover:bg-tealDark text-white px-5 py-2 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        data-i18n="navBooking">Book Now</a>
+
+                    <!-- Language Toggle -->
+                    <div class="relative ml-4 rtl:mr-4 group">
+                        <button
+                            class="flex items-center gap-2 hover:text-tealLight transition-colors outline-none focus:outline-none">
+                            <i class="fa-solid fa-globe"></i>
+                            <span id="current-lang" class="uppercase font-bold">FR</span>
+                            <i
+                                class="fa-solid fa-chevron-down text-xs ml-1 transition-transform group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown -->
+                        <div
+                            class="absolute right-0 rtl:left-0 rtl:right-auto mt-2 w-32 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden transform origin-top group-hover:scale-100 scale-95 border border-gray-100">
+                            <button onclick="changeLanguage('fr')"
+                                class="block w-full text-left px-4 py-3 text-navy hover:bg-tealLight hover:text-white transition-colors text-sm font-medium">Français</button>
+                            <button onclick="changeLanguage('ar')"
+                                class="block w-full text-left rtl:text-right px-4 py-3 text-navy hover:bg-tealLight hover:text-white transition-colors text-sm font-medium border-t border-gray-100">العربية
+                                (Arabic)</button>
+                            <button onclick="changeLanguage('en')"
+                                class="block w-full text-left px-4 py-3 text-navy hover:bg-tealLight hover:text-white transition-colors text-sm font-medium border-t border-gray-100">English</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <!-- Mobile Lang Toggle -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-tealLight transition-colors">
+                            <i class="fa-solid fa-globe text-sm"></i>
+                            <span id="mobile-current-lang" class="uppercase font-bold text-sm">FR</span>
+                        </button>
+                        <!-- Dropdown -->
+                        <div
+                            class="absolute right-0 rtl:left-0 rtl:right-auto mt-2 w-28 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                            <button onclick="changeLanguage('fr')"
+                                class="block w-full text-left px-3 py-2 text-navy hover:bg-tealLight text-xs">Français</button>
+                            <button onclick="changeLanguage('ar')"
+                                class="block w-full text-left rtl:text-right px-3 py-2 text-navy hover:bg-tealLight border-t border-gray-100 text-xs">العربية</button>
+                            <button onclick="changeLanguage('en')"
+                                class="block w-full text-left px-3 py-2 text-navy hover:bg-tealLight border-t border-gray-100 text-xs">English</button>
+                        </div>
+                    </div>
+
+                    <button id="mobile-menu-btn" class="text-white hover:text-tealLight transition-colors outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-navyLight border-t border-navy/20 h-screen w-full absolute top-20 left-0 shadow-2xl origin-top py-6 px-4">
+            <div class="flex flex-col space-y-6 text-center">
+                <a href="#home"
+                    class="mobile-link text-lg text-white hover:text-tealLight font-medium transition-colors"
+                    data-i18n="navHome">Home</a>
+                <a href="#services"
+                    class="mobile-link text-lg text-white hover:text-tealLight font-medium transition-colors"
+                    data-i18n="navServices">Services</a>
+                <a href="#portfolio"
+                    class="mobile-link text-lg text-white hover:text-tealLight font-medium transition-colors"
+                    data-i18n="navPortfolio">Portfolio</a>
+                <a href="#contact"
+                    class="mobile-link text-lg text-white hover:text-tealLight font-medium transition-colors"
+                    data-i18n="navContact">Contact</a>
+                <a href="#booking"
+                    class="mobile-link bg-teal hover:bg-tealDark text-white px-6 py-3 rounded-full font-medium transition-all shadow-md mx-auto inline-block mt-4"
+                    data-i18n="navBooking">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-[90vh] flex items-center justify-center hero-bg">
+        <div class="absolute inset-0 hero-overlay"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+            <div class="inline-block mb-6 p-2 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 fade-in"
+                style="animation-delay: 0.1s;">
+                <p class="text-tealLight font-medium px-4 py-1" data-i18n="heroBadge">Bir El Djir, Oran</p>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-tight fade-in drop-shadow-lg"
+                style="animation-delay: 0.2s;" data-i18n="heroTitle">
+                ProServe
+            </h1>
+            <p class="mt-4 text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto mb-10 fade-in font-light leading-relaxed"
+                style="animation-delay: 0.4s;" data-i18n="heroSubtitle">
+                Professional Secretarial & Administrative Solutions
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in" style="animation-delay: 0.6s;">
+                <a href="#services"
+                    class="bg-teal hover:bg-tealDark text-white px-8 py-4 rounded-full font-bold text-lg transition-all shadow-lg hover:shadow-teal/50 transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                    <span data-i18n="heroBtnServices">Our Services</span>
+                    <i class="fa-solid fa-arrow-right rtl:rotate-180 transition-transform"></i>
+                </a>
+                <a href="#booking"
+                    class="bg-transparent border-2 border-white hover:bg-white hover:text-navy text-white px-8 py-4 rounded-full font-bold text-lg transition-all flex items-center justify-center gap-3">
+                    <span data-i18n="heroBtnBook">Book Consultation</span>
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Decorative elements -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce text-white/50 cursor-pointer"
+            onclick="window.scrollTo({top: document.getElementById('services').offsetTop - 80, behavior: 'smooth'})">
+            <span class="text-sm mb-2" data-i18n="scrollDown">Scroll Down</span>
+            <i class="fa-solid fa-chevron-down hidden md:block"></i>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-grayLight relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-teal font-bold tracking-widest uppercase mb-2" data-i18n="sectionLabelServices">What We
+                    Do</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-navy" data-i18n="sectionServicesTitle">Our Services</h3>
+                <div class="w-24 h-1 bg-teal mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 group hover:-translate-y-2">
+                    <div
+                        class="w-16 h-16 bg-teal/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal transition-colors duration-300">
+                        <i
+                            class="fa-solid fa-images text-3xl text-teal group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-4" data-i18n="serv1Title">Photo Albums & Print Design</h4>
+                    <p class="text-grayText leading-relaxed mb-6" data-i18n="serv1Desc">High-quality designs and prints
+                        for all your photo albums, ensuring your memories are preserved beautifully.</p>
+                    <div class="inline-block bg-grayLight text-navy text-sm font-semibold px-4 py-2 rounded-full border border-gray-200"
+                        data-i18n="priceOnRequest">On Request</div>
+                </div>
+
+                <!-- Service 2 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 group hover:-translate-y-2">
+                    <div
+                        class="w-16 h-16 bg-navy/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-navy transition-colors duration-300">
+                        <i
+                            class="fa-solid fa-address-card text-3xl text-navy group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-4" data-i18n="serv2Title">Business Cards & Invitations
+                    </h4>
+                    <p class="text-grayText leading-relaxed mb-6" data-i18n="serv2Desc">Elegant, professional business
+                        cards and custom-designed invitations for weddings and special events.</p>
+                    <div class="inline-block bg-grayLight text-navy text-sm font-semibold px-4 py-2 rounded-full border border-gray-200"
+                        data-i18n="priceOnRequest">On Request</div>
+                </div>
+
+                <!-- Service 3 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 group hover:-translate-y-2">
+                    <div
+                        class="w-16 h-16 bg-teal/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal transition-colors duration-300">
+                        <i
+                            class="fa-solid fa-book-open text-3xl text-teal group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-4" data-i18n="serv3Title">Graduation Memoirs & Book
+                        Printing</h4>
+                    <p class="text-grayText leading-relaxed mb-6" data-i18n="serv3Desc">Professional layout, printing,
+                        and high-quality binding services for university theses, memoirs, and books.</p>
+                    <div class="inline-block bg-grayLight text-navy text-sm font-semibold px-4 py-2 rounded-full border border-gray-200"
+                        data-i18n="priceOnRequest">On Request</div>
+                </div>
+
+                <!-- Service 4 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 group hover:-translate-y-2 lg:col-start-1 lg:col-span-1 md:col-span-2 md:w-1/2 lg:w-full md:mx-auto">
+                    <div
+                        class="w-16 h-16 bg-navy/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-navy transition-colors duration-300">
+                        <i
+                            class="fa-solid fa-desktop text-3xl text-navy group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-4" data-i18n="serv4Title">Computer & Internet Services
+                    </h4>
+                    <p class="text-grayText leading-relaxed mb-6" data-i18n="serv4Desc">Comprehensive IT support,
+                        internet cafe services, formatting, software assistance, and digital solutions.</p>
+                    <div class="inline-block bg-grayLight text-navy text-sm font-semibold px-4 py-2 rounded-full border border-gray-200"
+                        data-i18n="priceOnRequest">On Request</div>
+                </div>
+
+                <!-- Service 5 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 group hover:-translate-y-2 lg:col-start-2 lg:col-span-2 md:col-span-2">
+                    <div
+                        class="w-16 h-16 bg-teal/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal transition-colors duration-300">
+                        <i
+                            class="fa-solid fa-file-signature text-3xl text-teal group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <div class="flex flex-col h-full -mt-[76px] pl-20 rtl:pl-0 rtl:pr-20 justify-center">
+                        <h4 class="text-xl font-bold text-navy mb-4" data-i18n="serv5Title">Administrative & Secretarial
+                            Services</h4>
+                        <p class="text-grayText leading-relaxed mb-6" data-i18n="serv5Desc">Official document
+                            preparation, typing, translating, photocopying, legal forms, and expert administrative
+                            consulting.</p>
+                        <div>
+                            <div class="inline-block bg-grayLight text-navy text-sm font-semibold px-4 py-2 rounded-full border border-gray-200"
+                                data-i18n="priceOnRequest">On Request</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-teal font-bold tracking-widest uppercase mb-2" data-i18n="sectionLabelPortfolio">Our
+                    Work</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-navy mb-6" data-i18n="sectionPortfolioTitle">Portfolio
+                </h3>
+                <div class="w-24 h-1 bg-teal mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button
+                    class="filter-btn active bg-navy text-white px-6 py-2 rounded-full font-medium transition-colors shadow-md"
+                    data-filter="all" data-i18n="filterAll">All</button>
+                <button
+                    class="filter-btn bg-grayLight text-navy hover:bg-teal/10 border border-gray-200 px-6 py-2 rounded-full font-medium transition-colors"
+                    data-filter="prints" data-i18n="filterPrints">Prints & Albums</button>
+                <button
+                    class="filter-btn bg-grayLight text-navy hover:bg-teal/10 border border-gray-200 px-6 py-2 rounded-full font-medium transition-colors"
+                    data-filter="cards" data-i18n="filterCards">Cards & Invitations</button>
+                <button
+                    class="filter-btn bg-grayLight text-navy hover:bg-teal/10 border border-gray-200 px-6 py-2 rounded-full font-medium transition-colors"
+                    data-filter="books" data-i18n="filterBooks">Books & Memoirs</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-gallery">
+                <!-- Item 1 (Prints) -->
+                <div class="portfolio-item prints group relative overflow-hidden rounded-2xl shadow-md asp-ratio">
+                    <img src="https://images.unsplash.com/photo-1594911187425-9ba44f2d57cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Photo Album"
+                        class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-navy/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col">
+                        <i class="fa-solid fa-images text-3xl text-tealLight mb-3"></i>
+                        <h5 class="text-white font-bold text-xl" data-i18n="pItm1">Wedding Album</h5>
+                    </div>
+                </div>
+
+                <!-- Item 2 (Cards) -->
+                <div class="portfolio-item cards group relative overflow-hidden rounded-2xl shadow-md">
+                    <img src="https://images.unsplash.com/photo-1589412586676-47b1c41fa214?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Business Card"
+                        class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-navy/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col">
+                        <i class="fa-solid fa-address-card text-3xl text-tealLight mb-3"></i>
+                        <h5 class="text-white font-bold text-xl" data-i18n="pItm2">Business Card</h5>
+                    </div>
+                </div>
+
+                <!-- Item 3 (Books) -->
+                <div class="portfolio-item books group relative overflow-hidden rounded-2xl shadow-md">
+                    <img src="https://images.unsplash.com/photo-1623126757656-78cc12dff6f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Printed Book"
+                        class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-navy/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col">
+                        <i class="fa-solid fa-book text-3xl text-tealLight mb-3"></i>
+                        <h5 class="text-white font-bold text-xl" data-i18n="pItm3">Graduation Memoir</h5>
+                    </div>
+                </div>
+
+                <!-- Item 4 (Cards) -->
+                <div class="portfolio-item cards group relative overflow-hidden rounded-2xl shadow-md">
+                    <img src="https://images.unsplash.com/photo-1606768666853-403c90a981ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Wedding Invitation"
+                        class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-navy/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col">
+                        <i class="fa-solid fa-envelope-open-text text-3xl text-tealLight mb-3"></i>
+                        <h5 class="text-white font-bold text-xl" data-i18n="pItm4">Event Invitation</h5>
+                    </div>
+                </div>
+
+                <!-- Item 5 (Prints) -->
+                <div class="portfolio-item prints group relative overflow-hidden rounded-2xl shadow-md">
+                    <img src="https://images.unsplash.com/photo-1606214872149-5f25baf0e80a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Large Print"
+                        class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-navy/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col">
+                        <i class="fa-solid fa-print text-3xl text-tealLight mb-3"></i>
+                        <h5 class="text-white font-bold text-xl" data-i18n="pItm5">Custom Print Design</h5>
+                    </div>
+                </div>
+
+                <!-- Item 6 (Books) -->
+                <div class="portfolio-item books group relative overflow-hidden rounded-2xl shadow-md">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Stacked Books"
+                        class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-navy/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col">
+                        <i class="fa-solid fa-book-open text-3xl text-tealLight mb-3"></i>
+                        <h5 class="text-white font-bold text-xl" data-i18n="pItm6">University Thesis Binding</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Form & Contact Section -->
+    <section class="py-24 bg-navy text-white relative">
+        <!-- Decorative pattern -->
+        <div class="absolute inset-0 opacity-5"
+            style="background-image: radial-gradient(#2dd4bf 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row gap-16">
+
+                <!-- Booking Form -->
+                <div id="booking" class="w-full lg:w-1/2">
+                    <h2 class="text-tealLight font-bold tracking-widest uppercase mb-2" data-i18n="sectionLabelBooking">
+                        Ready to Start?</h2>
+                    <h3 class="text-4xl font-bold mb-8" data-i18n="sectionBookingTitle">Book a Service</h3>
+
+                    <div class="bg-navyLight rounded-3xl p-8 shadow-2xl border border-white/10">
+                        <form id="booking-form" onsubmit="event.preventDefault(); submitBooking();" class="space-y-6">
+                            <div>
+                                <label for="b-name" class="block text-sm font-medium text-gray-300 mb-2"
+                                    data-i18n="formName">Full Name</label>
+                                <input type="text" id="b-name" required
+                                    class="w-full bg-navy/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors"
+                                    placeholder="e.g. John Doe">
+                            </div>
+
+                            <div>
+                                <label for="b-service" class="block text-sm font-medium text-gray-300 mb-2"
+                                    data-i18n="formService">Select Service</label>
+                                <select id="b-service" required
+                                    class="w-full bg-navy/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors">
+                                    <option value="" disabled selected data-i18n="formOptChoose">Choose a service
+                                    </option>
+                                    <option value="Photo Albums & Print Design" data-i18n="serv1Title">Photo Albums &
+                                        Print Design</option>
+                                    <option value="Business Cards & Invitations" data-i18n="serv2Title">Business Cards &
+                                        Invitations</option>
+                                    <option value="Graduation Memoirs & Book Printing" data-i18n="serv3Title">Graduation
+                                        Memoirs & Book Printing</option>
+                                    <option value="Computer & Internet Services" data-i18n="serv4Title">Computer &
+                                        Internet Services</option>
+                                    <option value="Administrative & Secretarial Services" data-i18n="serv5Title">
+                                        Administrative & Secretarial Services</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="b-date" class="block text-sm font-medium text-gray-300 mb-2"
+                                        data-i18n="formDate">Preferred Date</label>
+                                    <input type="date" id="b-date"
+                                        class="w-full bg-navy/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors"
+                                        style="color-scheme: dark;">
+                                </div>
+                                <div>
+                                    <label for="b-phone" class="block text-sm font-medium text-gray-300 mb-2"
+                                        data-i18n="formPhone">Phone Number</label>
+                                    <input type="tel" id="b-phone" required
+                                        class="w-full bg-navy/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal focus:ring-1 focus:ring-teal transition-colors"
+                                        placeholder="+213 799 52 75 13">
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg py-4 rounded-xl transition-colors shadow-lg flex items-center justify-center gap-3">
+                                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                                <span data-i18n="formBtn">Send Request via WhatsApp</span>
+                            </button>
+                            <p class="text-xs text-center text-gray-400 mt-4" data-i18n="formDisclaimer">* Your request
+                                will open securely in WhatsApp.</p>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div id="contact" class="w-full lg:w-1/2 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-tealLight font-bold tracking-widest uppercase mb-2"
+                            data-i18n="sectionLabelContact">Reach Out</h2>
+                        <h3 class="text-4xl font-bold mb-8" data-i18n="sectionContactTitle">Contact Us</h3>
+
+                        <div class="space-y-6 mb-10">
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 text-tealLight">
+                                    <i class="fa-solid fa-location-dot text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold" data-i18n="contactAddressTitle">Address</h4>
+                                    <p class="text-gray-300 leading-relaxed" data-i18n="address">Quartier Belkaid
+                                        n°13,<br>Bir El Djir, Oran, Algeria</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 text-tealLight">
+                                    <i class="fa-solid fa-clock text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold" data-i18n="contactHoursTitle">Working Hours</h4>
+                                    <p class="text-gray-300" data-i18n="workingHours">Sunday - Thursday: 8:00 AM - 5:00
+                                        PM</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 text-tealLight">
+                                    <i class="fa-solid fa-phone text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold" data-i18n="contactPhoneTitle">Phone & WhatsApp</h4>
+                                    <p class="text-gray-300 text-xl font-medium tracking-wider" dir="ltr">0799527513</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 text-tealLight">
+                                    <i class="fa-solid fa-envelope text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold" data-i18n="contactEmailTitle">Email Address</h4>
+                                    <a href="mailto:prof.services.dz@gmail.com"
+                                        class="text-gray-300 hover:text-tealLight transition-colors">prof.services.dz@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map -->
+                        <div class="w-full h-48 rounded-2xl overflow-hidden border border-white/10 shadow-lg">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12948.31826500438!2d-0.5694721!3d35.7336111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7e63bba28b2db5%3A0xe5aab4ee29dcfe54!2sBir%20El%20Djir%2C%20Algeria!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Google Maps - ProServe Location"></iframe>
+                        </div>
+
+                        <!-- Social -->
+                        <div class="mt-8 flex items-center gap-4">
+                            <h4 class="font-medium text-gray-300" data-i18n="followUs">Follow us on Facebook:</h4>
+                            <a href="#"
+                                class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-white hover:text-blue-600 transition-colors shadow-lg">
+                                <i class="fa-brands fa-facebook-f text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0a1120] border-t border-white/5 py-8 text-center text-sm text-gray-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; <span id="year"></span> ProServe | مؤسسة السكرتارية والاستشارة الإدارية. <span
+                    data-i18n="footerRights">All rights reserved.</span></p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/213799527513" target="_blank"
+        class="fixed bottom-6 right-6 rtl:left-6 rtl:right-auto bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-[0_4px_14px_0_rgba(37,211,102,0.39)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.23)] hover:bg-[#128C7E] transition-all transform hover:-translate-y-1 z-50 float-anim">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 1. Translations Dictionary
+        const translations = {
+            fr: {
+                // Nav
+                logoSub: "CONSEIL",
+                navHome: "Accueil",
+                navServices: "Services",
+                navPortfolio: "Portfolio",
+                navContact: "Contact",
+                navBooking: "Réserver",
+                // Hero
+                heroBadge: "Bir El Djir, Oran",
+                heroTitle: "ProServe",
+                heroSubtitle: "Solutions Professionnelles de Secrétariat et Conseils Administratifs",
+                heroBtnServices: "Nos Services",
+                heroBtnBook: "Prendre Rendez-vous",
+                scrollDown: "Défiler",
+                // Services
+                sectionLabelServices: "Ce que nous faisons",
+                sectionServicesTitle: "Nos Services",
+                serv1Title: "Albums Photos & Conception d'Impression",
+                serv1Desc: "Conceptions et impressions de haute qualité pour tous vos albums photos, garantissant la préservation de vos précieux souvenirs.",
+                serv2Title: "Cartes de Visite & Invitations",
+                serv2Desc: "Cartes de visite élégantes et professionnelles et invitations personnalisées pour mariages et événements spéciaux.",
+                serv3Title: "Mémoires de Fin d'Études & Impression de Livres",
+                serv3Desc: "Services de mise en page professionnelle, d'impression et de reliure de haute qualité pour les thèses, mémoires et livres.",
+                serv4Title: "Services Informatiques & Internet",
+                serv4Desc: "Assistance informatique complète, services de cybercafé, formatage, assistance logicielle et solutions numériques.",
+                serv5Title: "Services Administratifs & de Secrétariat",
+                serv5Desc: "Préparation de documents officiels, saisie, traduction, photocopie, formulaires légaux et conseil administratif expert.",
+                priceOnRequest: "Sur demande",
+                // Portfolio
+                sectionLabelPortfolio: "Nos Travaux",
+                sectionPortfolioTitle: "Portfolio",
+                filterAll: "Tous",
+                filterPrints: "Impressions & Albums",
+                filterCards: "Cartes & Invitations",
+                filterBooks: "Livres & Mémoires",
+                pItm1: "Album de Mariage", pItm2: "Carte de Visite", pItm3: "Mémoire de Soutenance",
+                pItm4: "Invitation d'Événement", pItm5: "Design Sur Mesure", pItm6: "Reliure de Thèse",
+                // Booking
+                sectionLabelBooking: "Prêt à commencer ?",
+                sectionBookingTitle: "Réserver un Service",
+                formName: "Nom Complet",
+                formService: "Sélectionner un Service",
+                formOptChoose: "Choisir un service...",
+                formDate: "Date Souhaitée",
+                formPhone: "Numéro de Téléphone",
+                formBtn: "Envoyer la Demande (WhatsApp)",
+                formDisclaimer: "* Votre demande s'ouvrira en toute sécurité dans WhatsApp.",
+                // Contact
+                sectionLabelContact: "Contact",
+                sectionContactTitle: "Contactez-Nous",
+                contactAddressTitle: "Adresse",
+                address: "Quartier Belkaid n°13,<br>Bir El Djir, Oran, Algérie",
+                contactHoursTitle: "Heures d'Ouverture",
+                workingHours: "Dimanche - Jeudi : 08:00 - 17:00",
+                contactPhoneTitle: "Téléphone & WhatsApp",
+                contactEmailTitle: "Adresse E-mail",
+                followUs: "Suivez-nous sur Facebook :",
+                footerRights: "Tous droits réservés."
+            },
+            en: {
+                // Nav
+                logoSub: "CONSULTING",
+                navHome: "Home",
+                navServices: "Services",
+                navPortfolio: "Portfolio",
+                navContact: "Contact",
+                navBooking: "Book Now",
+                // Hero
+                heroBadge: "Bir El Djir, Oran",
+                heroTitle: "ProServe",
+                heroSubtitle: "Professional Secretarial & Administrative Solutions",
+                heroBtnServices: "Our Services",
+                heroBtnBook: "Book Consultation",
+                scrollDown: "Scroll Down",
+                // Services
+                sectionLabelServices: "What We Do",
+                sectionServicesTitle: "Our Services",
+                serv1Title: "Photo Albums & Print Design",
+                serv1Desc: "High-quality designs and prints for all your photo albums, ensuring your memories are preserved beautifully.",
+                serv2Title: "Business Cards & Invitations",
+                serv2Desc: "Elegant, professional business cards and custom-designed invitations for weddings and special events.",
+                serv3Title: "Graduation Memoirs & Book Printing",
+                serv3Desc: "Professional layout, printing, and high-quality binding services for university theses, memoirs, and books.",
+                serv4Title: "Computer & Internet Services",
+                serv4Desc: "Comprehensive IT support, internet cafe services, formatting, software assistance, and digital solutions.",
+                serv5Title: "Administrative & Secretarial Services",
+                serv5Desc: "Official document preparation, typing, translating, photocopying, legal forms, and expert administrative consulting.",
+                priceOnRequest: "On Request",
+                // Portfolio
+                sectionLabelPortfolio: "Our Work",
+                sectionPortfolioTitle: "Portfolio",
+                filterAll: "All",
+                filterPrints: "Prints & Albums",
+                filterCards: "Cards & Invitations",
+                filterBooks: "Books & Memoirs",
+                pItm1: "Wedding Album", pItm2: "Business Card", pItm3: "Graduation Memoir",
+                pItm4: "Event Invitation", pItm5: "Custom Print Design", pItm6: "Thesis Binding",
+                // Booking
+                sectionLabelBooking: "Ready to Start?",
+                sectionBookingTitle: "Book a Service",
+                formName: "Full Name",
+                formService: "Select Service",
+                formOptChoose: "Choose a service...",
+                formDate: "Preferred Date",
+                formPhone: "Phone Number",
+                formBtn: "Send Request via WhatsApp",
+                formDisclaimer: "* Your request will open securely in WhatsApp.",
+                // Contact
+                sectionLabelContact: "Reach Out",
+                sectionContactTitle: "Contact Us",
+                contactAddressTitle: "Address",
+                address: "Quartier Belkaid n°13,<br>Bir El Djir, Oran, Algeria",
+                contactHoursTitle: "Working Hours",
+                workingHours: "Sunday - Thursday: 8:00 AM - 5:00 PM",
+                contactPhoneTitle: "Phone & WhatsApp",
+                contactEmailTitle: "Email Address",
+                followUs: "Follow us on Facebook:",
+                footerRights: "All rights reserved."
+            },
+            ar: {
+                // Nav
+                logoSub: "استشارة",
+                navHome: "الرئيسية",
+                navServices: "خدماتنا",
+                navPortfolio: "أعمالنا",
+                navContact: "اتصل بنا",
+                navBooking: "احجز الآن",
+                // Hero
+                heroBadge: "بئر الجير، وهران",
+                heroTitle: "برو سيرف (ProServe)",
+                heroSubtitle: "حلول احترافية للسكرتارية والاستشارات الإدارية",
+                heroBtnServices: "اكتشف خدماتنا",
+                heroBtnBook: "حجز موعد",
+                scrollDown: "تمرير للأسفل",
+                // Services
+                sectionLabelServices: "ماذا نقدم",
+                sectionServicesTitle: "خدماتنا",
+                serv1Title: "ألبومات الصور وتصميم المطبوعات",
+                serv1Desc: "تصاميم ومطبوعات عالية الجودة لجميع ألبومات الصور الخاصة بك، لضمان الحفاظ على ذكرياتك بشكل جميل.",
+                serv2Title: "بطاقات العمل ودعوات الزفاف",
+                serv2Desc: "بطاقات عمل أنيقة، ودعوات مخصصة لحفلات الزفاف والمناسبات الخاصة.",
+                serv3Title: "مذكرات التخرج وطباعة الكتب",
+                serv3Desc: "خدمات تنسيق وطباعة وتجليد عالية الجودة للرسائل الجامعية والمذكرات والكتب.",
+                serv4Title: "خدمات الكمبيوتر والإنترنت",
+                serv4Desc: "دعم شامل لتقنية المعلومات، خدمات مقهى الإنترنت، فورمات، مساعدة برمجية، وحلول رقمية.",
+                serv5Title: "الخدمات الإدارية والسكرتارية",
+                serv5Desc: "إعداد المستندات الرسمية، الكتابة، الترجمة، النسخ، النماذج القانونية، والاستشارات الإدارية.",
+                priceOnRequest: "عند الطلب",
+                // Portfolio
+                sectionLabelPortfolio: "أعمالنا",
+                sectionPortfolioTitle: "معرض الأعمال",
+                filterAll: "الكل",
+                filterPrints: "مطبوعات وألبومات",
+                filterCards: "بطاقات ودعوات",
+                filterBooks: "كتب ومذكرات",
+                pItm1: "ألبوم زفاف", pItm2: "بطاقة عمل", pItm3: "مذكرة تخرج",
+                pItm4: "دعوة مناسبة", pItm5: "تصميم مخصص", pItm6: "تجليد رسالة",
+                // Booking
+                sectionLabelBooking: "مستعد للبدء؟",
+                sectionBookingTitle: "احجز خدمة",
+                formName: "الاسم الكامل",
+                formService: "اختر الخدمة",
+                formOptChoose: "اختر خدمة...",
+                formDate: "التاريخ المفضل",
+                formPhone: "رقم الهاتف",
+                formBtn: "إرسال عبر الواتس آب",
+                formDisclaimer: "* سيتم فتح طلبك بأمان في تطبيق واتساب.",
+                // Contact
+                sectionLabelContact: "تواصل معنا",
+                sectionContactTitle: "اتصل بنا",
+                contactAddressTitle: "العنوان",
+                address: "حي بلقايد رقم 13،<br>بئر الجير، وهران، الجزائر",
+                contactHoursTitle: "ساعات العمل",
+                workingHours: "الأحد - الخميس: 08:00 صباحاً - 05:00 مساءً",
+                contactPhoneTitle: "الهاتف وواتساب",
+                contactEmailTitle: "البريد الإلكتروني",
+                followUs: "تابعنا على فيسبوك:",
+                footerRights: "جميع الحقوق محفوظة."
+            }
+        };
+
+        // 2. Language Switching Logic
+        function changeLanguage(lang) {
+            // Update document dir and lang attributes
+            document.documentElement.lang = lang;
+            document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            // Update display of current lang
+            document.getElementById('current-lang').textContent = lang;
+            document.getElementById('mobile-current-lang').textContent = lang;
+
+            // Apply translations to all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    if (element.tagName === "INPUT" && element.hasAttribute('placeholder')) {
+                        // Some placeholders could be translated but we kept them simple, skipping inputs unless specifically mapped
+                        if (key.includes("form") && element.tagName === "OPTION") {
+                            element.textContent = translations[lang][key];
+                        }
+                    } else if (key === "address") {
+                        element.innerHTML = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+
+            // Update Select Form Options specifically
+            const select = document.getElementById('b-service');
+            Array.from(select.options).forEach(opt => {
+                const optKey = opt.getAttribute('data-i18n');
+                if (optKey && translations[lang][optKey]) {
+                    opt.textContent = translations[lang][optKey];
+                    // Don't change value, wait, actually value needs to be standard or dynamic. 
+                    // Let's keep value as EN text so whatsapp message makes sense, 
+                    // Wait, value is used in whatsapp, let's translate the value too so the message is in their language!
+                    opt.value = translations[lang][optKey];
+                }
+            });
+
+            // Close mobile menu if open
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+
+        // Initialize default language (French as per default Oran standard usually, but can be EN based on HTML)
+        changeLanguage('fr');
+
+        // 3. Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // 4. Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // 5. Portfolio Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-navy', 'text-white');
+                    b.classList.add('bg-grayLight', 'text-navy');
+                });
+
+                // Add active class to clicked
+                btn.classList.add('active', 'bg-navy', 'text-white');
+                btn.classList.remove('bg-grayLight', 'text-navy');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // 6. WhatsApp Booking Form Submission
+        function submitBooking() {
+            const name = document.getElementById('b-name').value;
+            const service = document.getElementById('b-service').value;
+            const date = document.getElementById('b-date').value;
+            const phone = document.getElementById('b-phone').value;
+            const currentLang = document.documentElement.lang;
+
+            let message = "";
+            if (currentLang === 'ar') {
+                message = `مرحباً برو سيرف،\nأود طلب خدمة من خلال موقعكم.\n\n*الاسم:* ${name}\n*الخدمة المطلوبة:* ${service}\n*التاريخ المفصل:* ${date || 'غير محدد'}\n*رقم التواصل:* ${phone}\n\nشكراً لكم.`;
+            } else if (currentLang === 'fr') {
+                message = `Bonjour ProServe,\nJe souhaite réserver un service via votre site web.\n\n*Nom Complet:* ${name}\n*Service:* ${service}\n*Date Souhaitée:* ${date || 'Non spécifiée'}\n*Téléphone:* ${phone}\n\nMerci.`;
+            } else {
+                message = `Hello ProServe,\nI would like to book a service from your website.\n\n*Full Name:* ${name}\n*Service:* ${service}\n*Preferred Date:* ${date || 'Not specified'}\n*Phone number:* ${phone}\n\nThank you.`;
+            }
+
+            const encodedMessage = encodeURIComponent(message);
+            const waNumber = "213799527513";
+            const waUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
+
+            window.open(waUrl, '_blank');
+        }
+    </script>
+</body>
+
+</html>
